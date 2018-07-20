@@ -26,7 +26,7 @@
 import sys
 
 from argparse import ArgumentParser
-from libregice import Regice, RegiceClientTest, RegiceOpenOCD
+from libregice import Regice, RegiceClientTest, RegiceOpenOCD, RegiceJLink
 from regicecmd import RegicePrompt
 
 def main(argv):
@@ -41,6 +41,20 @@ def main(argv):
         help="Use openocd to connect to target"
     )
 
+    group = parser.add_argument_group('jlink')
+    group.add_argument(
+        "--jlink", action='store_true',
+        help="Use JLink to connect to target"
+    )
+    group.add_argument(
+        "--jlink-script", default=None,
+        help="Load and run a JLink script before to connect to target"
+    )
+    group.add_argument(
+        "--jlink-device", default=None,
+        help="Name of device to connect to"
+    )
+
     parser.add_argument(
         "--test", action='store_true',
         help="Use a mock as target"
@@ -49,6 +63,8 @@ def main(argv):
     args = parser.parse_args(argv)
     if args.openocd:
         client = RegiceOpenOCD()
+    if args.jlink:
+        client = RegiceJLink(args)
     if args.test:
         client = RegiceClientTest()
 
