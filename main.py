@@ -26,52 +26,15 @@
 import sys
 
 from argparse import ArgumentParser
-from libregice import Regice, RegiceClientTest, RegiceOpenOCD, RegiceJLink
+from libregice import Regice
+from libregice.helpers import regice_add_arguments, regice_alloc
 from regicecmd import RegicePrompt
 
 def main(argv):
     parser = ArgumentParser()
-    parser.add_argument(
-        "--svd",
-        help="SVD file that contains registers definition"
-    )
-
-    parser.add_argument(
-        "--openocd", action='store_true',
-        help="Use openocd to connect to target"
-    )
-
-    group = parser.add_argument_group('jlink')
-    group.add_argument(
-        "--jlink", action='store_true',
-        help="Use JLink to connect to target"
-    )
-    group.add_argument(
-        "--jlink-script", default=None,
-        help="Load and run a JLink script before to connect to target"
-    )
-    group.add_argument(
-        "--jlink-device", default=None,
-        help="Name of device to connect to"
-    )
-
-    parser.add_argument(
-        "--test", action='store_true',
-        help="Use a mock as target"
-    )
-
+    regice_add_arguments(parser)
     args = parser.parse_args(argv)
-    if args.openocd:
-        client = RegiceOpenOCD()
-    if args.jlink:
-        client = RegiceJLink(args)
-    if args.test:
-        client = RegiceClientTest()
-
-    regice = Regice(client)
-
-    if args.svd:
-        regice.load_svd(args.svd)
+    regice = regice_alloc(args)
 
     prompt = RegicePrompt(regice)
     prompt.prompt = 'RegICe> '
