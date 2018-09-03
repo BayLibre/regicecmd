@@ -27,9 +27,9 @@ from cmd import Cmd
 from libregice import SVDNotLoaded
 
 # pylint: disable=no-self-use
-class RegicePromptBase(Cmd):
+class MemtoolPromptBase(Cmd):
     """
-        A simple class to handle Regice commands
+        A simple class to handle Memtool commands
 
         This class is derived from Cmd and overrides onecmd and postcmd
         to handle exceptions and test.
@@ -72,14 +72,14 @@ class RegicePromptBase(Cmd):
             return False
         return stop[0]
 
-class RegicePeripheralPrompt(RegicePromptBase):
+class MemtoolPeripheralPrompt(MemtoolPromptBase):
     """
         A class to handle peripheral commands
     """
-    def __init__(self, regice_prompt, peripheral):
-        super(RegicePeripheralPrompt, self).__init__()
-        self.regice = regice_prompt.regice
-        self.test = regice_prompt.test
+    def __init__(self, memtool_prompt, peripheral):
+        super(MemtoolPeripheralPrompt, self).__init__()
+        self.regice = memtool_prompt.regice
+        self.test = memtool_prompt.test
         self.peripheral = peripheral
 
     def get_args(self, line):
@@ -150,7 +150,7 @@ class RegicePeripheralPrompt(RegicePromptBase):
 
     def do_return(self, _arg):
         """
-            Return from RegicePeripheralPrompt to RegicePrompt
+            Return from MemtoolPeripheralPrompt to MemtoolPrompt
 
             There are multiple prompt layers. This provides a way to exit
             the current prompt to come back to parent prompt.
@@ -262,12 +262,12 @@ class RegicePeripheralPrompt(RegicePromptBase):
                 _exit, values[register] = self.do_read("-v " + register)
         return False, values
 
-class RegicePrompt(RegicePromptBase):
+class MemtoolPrompt(MemtoolPromptBase):
     """
         A class to handle regice commands
     """
     def __init__(self, regice):
-        super(RegicePrompt, self).__init__()
+        super(MemtoolPrompt, self).__init__()
         self.regice = regice
 
     def do_peripherals(self, arg):
@@ -301,7 +301,7 @@ class RegicePrompt(RegicePromptBase):
         if not self.regice.peripheral_exist(args[0]) or not args:
             raise SyntaxWarning("Invalid peripheral")
 
-        cmd = RegicePeripheralPrompt(self, args[0])
+        cmd = MemtoolPeripheralPrompt(self, args[0])
         cmd.prompt = args[0] + ">"
         if len(args) == 1:
             cmd.cmdloop()

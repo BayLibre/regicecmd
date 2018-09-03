@@ -25,10 +25,9 @@
 
 import sys
 import unittest
-sys.path.append("../")
 
 from libregice import Regice, RegiceClientTest
-from regicecmd import RegicePrompt
+from memtool.memtool import MemtoolPrompt
 from svd import SVD
 
 class TestRegicePrompt(unittest.TestCase):
@@ -37,7 +36,7 @@ class TestRegicePrompt(unittest.TestCase):
         self.regice = Regice(RegiceClientTest())
         self.memory = self.regice.client.memory
         self.regice.load_svd('test.svd')
-        self.cmd = RegicePrompt(self.regice)
+        self.cmd = MemtoolPrompt(self.regice)
         self.cmd.test = True
 
     def setUp(self):
@@ -139,6 +138,9 @@ class TestRegicePrompt(unittest.TestCase):
 
         with self.assertRaises(SyntaxWarning):
             self.cmd.onecmd("peripherals")
+
+def run_tests(module):
+    return unittest.main(module=module, exit=False).result
 
 if __name__ == '__main__':
     unittest.main()

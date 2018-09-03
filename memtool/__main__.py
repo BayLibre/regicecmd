@@ -27,8 +27,8 @@ import sys
 
 from argparse import ArgumentParser
 from libregice import Regice
-from libregice.helpers import regice_add_arguments, regice_alloc
-from regicecmd import RegicePrompt
+from regicecommon.helpers import regice_add_arguments, regice_alloc
+from memtool.memtool import MemtoolPrompt
 
 def main(argv):
     parser = ArgumentParser()
@@ -36,8 +36,8 @@ def main(argv):
     args = parser.parse_args(argv)
     regice = regice_alloc(args)
 
-    prompt = RegicePrompt(regice)
-    prompt.prompt = 'RegICe> '
+    prompt = MemtoolPrompt(regice)
+    prompt.prompt = 'Memtool> '
     prompt.cmdloop()
 
 if __name__ == "__main__":

@@ -1,3 +1,0 @@
--e git://github.com/BayLibre/OpenOCD#egg=OpenOCD
--e git://github.com/BayLibre/libregice#egg=LibRegice
--e git://github.com/BayLibre/RegiceSVD#egg=RegiceSVD
