@@ -28,14 +28,14 @@ import unittest
 
 from libregice import Regice, RegiceClientTest
 from memtool.memtool import MemtoolPrompt
-from svd import SVD
+from regicecommon.helpers import load_svd
 
 class TestRegicePrompt(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        self.regice = Regice(RegiceClientTest())
+        svd = load_svd('test.svd')
+        self.regice = Regice(RegiceClientTest(), svd)
         self.memory = self.regice.client.memory
-        self.regice.load_svd('test.svd')
         self.cmd = MemtoolPrompt(self.regice)
         self.cmd.test = True
 
