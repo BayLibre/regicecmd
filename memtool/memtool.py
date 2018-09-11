@@ -24,7 +24,6 @@
 # SOFTWARE.
 
 from cmd import Cmd
-from libregice import SVDNotLoaded
 
 # pylint: disable=no-self-use
 class MemtoolPromptBase(Cmd):
@@ -54,8 +53,6 @@ class MemtoolPromptBase(Cmd):
 
         try:
             return super().onecmd(str)
-        except SVDNotLoaded:
-            print("Please run load_svd <svd_file> before to execute this command")
         except SyntaxWarning as ex:
             print(ex)
         return False, None
@@ -307,16 +304,6 @@ class MemtoolPrompt(MemtoolPromptBase):
             cmd.cmdloop()
         else:
             return cmd.onecmd(args[1])
-        return False, None
-
-    def do_load_svd(self, arg):
-        """
-            Load or reload a svd file
-
-            :param arg: svd_load command argument (e.g svd file to load)
-            :return: False, None
-        """
-        self.regice.load_svd(arg)
         return False, None
 
     def do_quit(self, _arg):
